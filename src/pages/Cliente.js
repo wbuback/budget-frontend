@@ -116,6 +116,7 @@ export default class Cliente extends Component {
                   <Button type='submit' onClick={this.submitForm}>
                     Salvar
                   </Button>
+
                   <Button
                     type='reset'
                     className='btn-danger'
