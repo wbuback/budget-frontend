@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Button } from 'react-bootstrap'
 
 export default class ListaItens extends Component {
+
   render () {
     const lista = this.props.itens
     return (
@@ -9,7 +10,7 @@ export default class ListaItens extends Component {
         <thead>
           <tr>
             <th>Empresa</th>
-            <th>Contato</th>
+            <th>Responsável</th>
             <th>Telefone</th>
             <th>Email</th>
             <th>Ações</th>
@@ -18,9 +19,9 @@ export default class ListaItens extends Component {
         <tbody>
           {lista.map(item => (
             <tr key={item._id}>
-              <td>{item.name}</td>
-              <td>{item.person}</td>
-              <td>{item.phone}</td>
+              <td>{item.nomeEmpresa}</td>
+              <td>{item.nomeResponsavel}</td>
+              <td>{item.telefone}</td>
               <td>
                 <a href={'mailto:' + item.email}>{item.email}</a>
               </td>

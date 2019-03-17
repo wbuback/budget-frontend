@@ -17,7 +17,8 @@ export default class Cliente extends Component {
     nomeEmpresa: '',
     nomeResponsavel: '',
     emailContato: '',
-    telefoneContato: ''
+    telefoneContato: '',
+    refresh: 1,
   }
 
   componentDidMount () {
@@ -28,11 +29,29 @@ export default class Cliente extends Component {
     const response = api.get('/customers')
     response.then(res => {
       this.setState({ clientes: res.data })
-      //   console.log(this.state.clientes)
     })
   }
 
-  submitForm = async () => {}
+  handleDelete = (_id) => {
+    api.delete('customers/' + _id)
+      .then(res => {
+        console.log(res);
+      });
+  }
+
+  submitForm = async () => {
+    const { nomeEmpresa, nomeResponsavel, emailContato, telefoneContato } = this.state;
+    const response = api.post('/customers', {
+      nomeEmpresa,
+      nomeResponsavel,
+      email: emailContato,
+      telefone: telefoneContato
+    });
+    response.then(ret => {
+      this.obterClientes()
+      console.log(ret);
+    });
+  }
 
   resetForm = async () => {
     this.setState({
@@ -56,6 +75,7 @@ export default class Cliente extends Component {
             </Col>
 
             {/* Formulário */}
+
             <Col>
               <form onSubmit={this.onSubmit}>
                 <Row>
@@ -66,8 +86,9 @@ export default class Cliente extends Component {
                       name='empresa'
                       placeholder='Empresa'
                       type='text'
+                      required
                       value={this.state.nomeEmpresa}
-                      onChange={value => this.setState({ nomeEmpresa: value })}
+                      onChange={(event, value) => this.setState({ nomeEmpresa: event.target.value })}
                     />
                   </Col>
                   <Col>
@@ -76,10 +97,11 @@ export default class Cliente extends Component {
                       id='responsavel'
                       name='responsavel'
                       placeholder='Responsável'
+                      required
                       type='text'
                       value={this.state.nomeResponsavel}
-                      onChange={value =>
-                        this.setState({ nomeResponsavel: value })
+                      onChange={(event, value) =>
+                        this.setState({ nomeResponsavel: event.target.value })
                       }
                     />
                   </Col>
@@ -92,8 +114,9 @@ export default class Cliente extends Component {
                       name='email'
                       placeholder='E-mail'
                       type='email'
+                      required
                       value={this.state.emailContato}
-                      onChange={value => this.setState({ emailContato: value })}
+                      onChange={(event, value) => this.setState({ emailContato: event.target.value })}
                     />
                   </Col>
                   <Col>
@@ -103,28 +126,29 @@ export default class Cliente extends Component {
                       name='telefone'
                       placeholder='Telefone'
                       type='text'
+                      required
                       value={this.state.telefoneContato}
-                      onChange={value =>
-                        this.setState({ telefoneContato: value })
+                      onChange={(event, value) =>
+                        this.setState({ telefoneContato: event.target.value })
                       }
                     />
                   </Col>
                 </Row>
-              </form>
-              <Row>
+                <Row>
                 <Col>
-                  <Button type='submit' onClick={this.submitForm}>
+                  <Button type='submit' onClick={this.submitForm} variant='success' size='sm'>
                     Salvar
                   </Button>
-
+                  &nbsp;
                   <Button
                     type='reset'
-                    className='btn-danger'
+                    variant='danger' size='sm'
                     onClick={this.resetForm}>
                     Cancelar
                   </Button>
                 </Col>
               </Row>
+              </form>
             </Col>
           </Row>
         </div>
